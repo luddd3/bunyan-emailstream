@@ -25,10 +25,10 @@
   },
   "homepage": "https://github.com/hyjin/bunyan-emailstream",
   "dependencies": {
-    "nodemailer": "~2.5.0"
   },
   "devDependencies": {
-    "bunyan": "~1.8.1",
+    "bunyan": "^1.8.12",
+    "nodemailer": "~4.4.2",
     "nodemailer-stub-transport": "^1.0.0"
   },
   "directories": {

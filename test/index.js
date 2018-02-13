@@ -1,19 +1,25 @@
 var bunyan = require('bunyan')
-var EmailStream = require('../').EmailStream
+var nodemailer = require('nodemailer')
 var stubTransport = require('nodemailer-stub-transport')
 
-var emailStream = new EmailStream({
-  to: 'me@example.com'
-}, stubTransport())
+var EmailStream = require('../').EmailStream
+
+var emailStream = new EmailStream(
+  {
+    to: 'me@example.com'
+  },
+  nodemailer.createTransport(stubTransport())
+)
 
 var myLogger = bunyan.createLogger({
   name: 'SleepBreaker',
-  streams: [{
-    type: 'raw', // You should use EmailStream with 'raw' type!
-    stream: emailStream,
-    level: 'fatal'
-  }
-  // Some other streams you want
+  streams: [
+    {
+      type: 'raw', // You should use EmailStream with 'raw' type!
+      stream: emailStream,
+      level: 'fatal'
+    }
+    // Some other streams you want
   ]
 })
 

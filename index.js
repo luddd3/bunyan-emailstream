@@ -1,7 +1,5 @@
 var util = require('util')
-var extend = util._extend
 var stream = require('stream')
-var nodemailer = require('nodemailer')
 
 var Stream = stream.Writable || stream.Stream
 
@@ -26,12 +24,12 @@ exports.EmailStream = EmailStream
 exports.formatSubject = formatSubject
 exports.formatBody = formatBody
 
-function EmailStream (mailOptions, transporter) {
+function EmailStream (mailOptions, transport) {
   Stream.call(this)
   this.writable = true
 
-  this._mailOptions = extend({}, mailOptions)
-  this._transport = nodemailer.createTransport(transporter)
+  this._mailOptions = Object.assign({}, mailOptions)
+  this._transport = transport
 
   this._bodyType = mailOptions.bodyType || 'text'
   delete mailOptions.bodyType
@@ -44,7 +42,7 @@ util.inherits(EmailStream, Stream)
 
 EmailStream.prototype.write = function (log) {
   var self = this
-  var message = extend({}, this._mailOptions)
+  var message = Object.assign({}, this._mailOptions)
 
   if (!message.subject) {
     message.subject = this.formatSubject(log)

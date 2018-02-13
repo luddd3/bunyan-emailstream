@@ -14,6 +14,7 @@ Here is a simple example to send 'fatal' level log messages to
 
 ```js
 var bunyan = require('bunyan');
+var nodemailer = require('nodemailer');
 var EmailStream = require('bunyan-emailstream').EmailStream;
 
 var emailStream = new EmailStream(
@@ -22,12 +23,12 @@ var emailStream = new EmailStream(
     to: 'me@example.com'
   },
   // Nodemailer transporter
-  { service: 'gmail',
+  nodemailer.createTransport({ service: 'gmail',
     auth: {
       user: 'username',
       pass: 'password'
     }
-  }
+  })
 );
 
 var myLogger = bunyan.createLogger({
@@ -85,14 +86,14 @@ var EmailStream = require('bunyan-emailstream').EmailStream;
 Create stream instance
 
 ```js
-var emailStream = new EmailStream(mailOptions, transporter);
+var emailStream = new EmailStream(mailOptions, transport);
 ```
 
 Where,
 * `mailOptions` is options of composing email message. See
 [mailOptions](#mailoptions-required) for more detail.
-* `transporter` is one for nodemailer's [avalible transports](https://github.com/andris9/Nodemailer#available-transports).
-Refer [transporter](#transporter) section for detailed options.
+* `transport` is one for nodemailer's available transports
+Refer [transport](#transport) section for detailed options.
 
 Pass to bunyan logger as a 'raw' type stream
 
@@ -128,11 +129,9 @@ You may need to specify body type in the `mailOptions`.
 See [nodemailer document](https://github.com/andris9/Nodemailer#e-mail-message-fields)
 for full list of options.
 
-#### transporter
+#### transport
 
-`transporter` is argument for `modemailer.createTransport()`, one for nodemailer's
-[avalible transports](https://github.com/andris9/Nodemailer#available-transports),
-or plain object (creates SMTP transport). When omitted SMTP direct transport will be used by default.
+`transport` is a transport created by `nodemailer.createTransport()`
 
 See [nodemailer document](https://github.com/andris9/Nodemailer#setting-up)
 for available transports and full list of options.
